@@ -5,19 +5,26 @@ class Calendar
   attr_accessor :year
   attr_reader :month_name, :num_days, :start_day
 
-
   def initialize(month, year)
-    @month = month
-    @year = year
-    @month_name = month_name
-
-    if month == nil && year == nil
+    unless month.class == Fixnum && year.class == Fixnum
       month = Time.new.month
       year = Time.new.year
     end
 
+    if (year < 1800 or year > 3000)
+      raise ArgumentError, "Year must be between 1800 and 3000"
+    end
+    if (month < 1 or month > 12)
+      raise ArgumentError, "Month must be in numeric form between 1 and 12"
+    end
+
+
+    @month = month
+    @year = year
+    @month_name = month_name
+
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    @month_name = months[@month - 1]
+    @month_name = months[month - 1]
   end
 
   def leap_year
@@ -32,9 +39,12 @@ class Calendar
     end
   end
 
-
   def month_header(month, year)
-    return "#{month_name} #{year}".center(20).rstrip + "\n"
+    if month.class != Fixnum && year.class != Fixnum
+      return "#{month_name} #{Time.new.year}".center(20).rstrip + "\n"
+    else 
+      return "#{month_name} #{year}".center(20).rstrip + "\n"
+    end
   end
 
   def day_header
@@ -97,7 +107,5 @@ class Calendar
     print_dates
     puts "\n"
   end
-
-
 
 end

@@ -20,7 +20,7 @@ class CalendarTest < Test::Unit::TestCase
   end 
 
   def test_03_four_week_month
-    assert_equal(`cal 2 2015`, `ruby cal_exe.rb 2 2015`)
+    assert_equal(`cal 2 2015`, `ruby cal_exe.rb 2 2015` + "\n")
   end
 
   def test_03b_five_week_month
@@ -28,7 +28,7 @@ class CalendarTest < Test::Unit::TestCase
   end
 
   def test_03c_six_week_month
-    assert_equal(`cal 3 2013`, `ruby cal_exe.rb 3 2013`)
+    assert_equal(`cal 3 2013` + "\n", `ruby cal_exe.rb 3 2013`)
   end
 
   # def test_04_year_only
