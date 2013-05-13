@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'calendar'
+require 'year'
 
 class CalendarTest < Test::Unit::TestCase
 
@@ -31,9 +32,9 @@ class CalendarTest < Test::Unit::TestCase
     assert_equal(`cal 3 2013` + "\n", `ruby cal_exe.rb 3 2013`)
   end
 
-  # def test_04_year_only
-  #   assert_equal(`cal 2013`, `ruby cal_exe.rb 2013`)
-  # end
+  def test_04_year_only
+    assert_equal(`cal 2013`, `ruby cal_exe.rb 2013`)
+  end
 
   # def test_05_error_message_month
   #   assert_equal(`cal 13 2013`, `ruby cal_exe.rb 2013`)
@@ -43,9 +44,9 @@ class CalendarTest < Test::Unit::TestCase
   #   assert_equal(`cal 10000`, `ruby cal_exe.rb 10000`)
   # end
 
-  def test_06_no_arguments
-    assert_equal(`cal`, `ruby cal_exe.rb`)
-  end
+  # def test_06_no_arguments
+  #   assert_equal(`cal`, `ruby cal_exe.rb`)
+  # end
 
 
 

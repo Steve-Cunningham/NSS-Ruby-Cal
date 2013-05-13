@@ -1,33 +1,43 @@
 
-class Calendar
+class Month
   
   attr_accessor :month
   attr_accessor :year
-  attr_reader :month_name, :num_days, :start_day
+  attr_reader :month_name, :num_days, :start_day, :weeks, :get_days_in_month
+  MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-  def initialize(month, year)
-    unless month.class == Fixnum && year.class == Fixnum
-      month = Time.new.month
-      year = Time.new.year
+  def month_to_i(month)
+
+    if MONTHS.include?(month)
+        numeric_month = MONTHS.index(month) + 1
+    else ((1..12).to_a.to_s).include?(month)
+        numeric_month = month
     end
 
-    if (year < 1800 or year > 3000)
-      raise ArgumentError, "Year must be between 1800 and 3000"
-    end
-    if (month < 1 or month > 12)
-      raise ArgumentError, "Month must be in numeric form between 1 and 12"
-    end
-
-
-    @month = month
-    @year = year
-    @month_name = month_name
-
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    @month_name = months[month - 1]
+    return numeric_month.to_i
   end
 
-  def leap_year
+  def initialize(month, year)
+    @year = year.to_i
+
+    if month != Fixnum
+      month = month_to_i(month)
+    end
+    @month = month
+
+    if (month < 1 or month > 12)
+      raise ArgumentError, "#{month} is neither a month number (1..12) nor a name"
+    end
+
+    if (@year < 1800 or @year > 3000)
+      raise ArgumentError, "Year must be between 1800 and 3000"
+    end
+
+    @month_name = MONTHS[month - 1]
+    @month_name = month_name
+  end
+
+  def leap_year?
     if year % 400 == 0
       true
     elsif year % 100 == 0
@@ -57,26 +67,27 @@ class Calendar
         month += 12
         year = @year - 1
     end
+
+    # Zeller's congruence (http://en.wikipedia.org/wiki/Zeller's_congruence)
     @start_day = (q + ((month + 1)*26  / 10).floor + year + (year / 4).floor + (6*(year / 100).floor) + (year / 400).floor) % 7
   end
 
-  def get_days_in_month(month, year)
-    if leap_year == true
+
+  def compile_dates
+
+    if leap_year? == true
     daysByMonth = [31,29,31,30,31,30,31,31,30,31,30,31]
     else
     daysByMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
     end
     @num_days = daysByMonth[@month - 1]
-  end
-
-
-  def print_dates
     
     chars = [" 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", "11", "12", 
     "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", 
     "26", "27", "28", "29", "30", "31"]
 
     num_days = @num_days
+    @weeks = []
 
     if num_days == 28
       chars = chars[0..27]
@@ -95,17 +106,28 @@ class Calendar
     while chars.length > 0
         week = chars.take(7)
         chars = chars.drop(7)
-        puts week.join(" ")
+        weeks_array_item = week.join(" ")
+        if weeks_array_item.length < 20
+          weeks_array_item = weeks_array_item + (" "*(20 - weeks_array_item.length))
+        end
+        @weeks.push(weeks_array_item)
     end
+    until @weeks.length == 6
+      @weeks.push("                    ")
+    end 
+    @weeks
 
   end
 
-  def print_calendar
+  def print_month
     puts month_header(month, year)
     puts day_header
-    get_days_in_month(month, year)
-    print_dates
+    compile_dates
+    puts @weeks
     puts "\n"
   end
 
 end
+
+
+
