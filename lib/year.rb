@@ -1,4 +1,4 @@
-require 'lib/calendar.rb'
+require_relative 'calendar'
 
 class Year
 

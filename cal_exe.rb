@@ -1,15 +1,11 @@
-require 'lib/calendar.rb'
-require 'lib/year.rb'
+require_relative 'lib/calendar'
+require_relative 'lib/year'
 
 
 if ARGV.length == 1
-  if ARGV[0].length < 4
-    raise ArgumentError, "Year must be between 1800 and 3000"
-  else
     year = ARGV[0].to_i
     cal = Year.new(year)
     cal.print_year 
-  end
 elsif ARGV.length == 0
     raise ArgumentError, "Please specify a month and year"
 else

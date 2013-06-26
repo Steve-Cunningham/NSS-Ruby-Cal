@@ -10,7 +10,7 @@ class Month
 
     if MONTHS.include?(month)
         numeric_month = MONTHS.index(month) + 1
-    else ((1..12).to_a.to_s).include?(month)
+    elsif 0 < month.to_i && month.to_i < 12
         numeric_month = month
     end
 
@@ -22,11 +22,7 @@ class Month
 
     if month != Fixnum
       month = month_to_i(month)
-    end
-    @month = month
-
-    if (month < 1 or month > 12)
-      raise ArgumentError, "#{month} is neither a month number (1..12) nor a name"
+      @month = month
     end
 
     if (@year < 1800 or @year > 3000)
@@ -113,7 +109,7 @@ class Month
         @weeks.push(weeks_array_item)
     end
     until @weeks.length == 6
-      @weeks.push("                    ")
+      @weeks.push("\n")
     end 
     @weeks
 
@@ -124,7 +120,7 @@ class Month
     puts day_header
     compile_dates
     puts @weeks
-    puts "\n"
+    # puts "\n"
   end
 
 end
